@@ -28,7 +28,7 @@
     display: flex;
     align-items: flex-end;
     gap: 2px;
-    height: 140px;
+    height: 120px;
     position: relative;
   }
 
@@ -69,10 +69,11 @@
       font-weight: 700;
       color: white;
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-      padding-top: 2px;
+      padding-top: 4px;
+      line-height: 1;
 
       &.optimal-label {
-        font-size: 14px;
+        font-size: 16px;
       }
     }
   }

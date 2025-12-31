@@ -119,6 +119,10 @@ export function StashSpaceGraph({
           <div className="legend-color" style={{ background: 'rgba(229, 57, 53, 0.4)' }} />
           <span>Uses More</span>
         </div>
+        <div className="legend-item">
+          <div className="legend-color" style={{ background: 'rgba(79, 195, 247, 0.3)' }} />
+          <span>Same Space</span>
+        </div>
       </div>
     </div>
   );
