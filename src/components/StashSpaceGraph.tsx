@@ -73,7 +73,7 @@ export function StashSpaceGraph({
                     height: `${barHeight}px`,
                     backgroundColor: getBarColor(index, point.slots),
                   }}
-                  title={`Craft ${point.amount}: ${point.slots} slots`}
+                  title={`Craft ${point.amount}: ${point.slots} slots (${point.slots - currentSlots >= 0 ? '+' : ''}${point.slots - currentSlots})`}
                 >
                   {isOptimal && <div className="bar-label optimal-label">★</div>}
                   {isSweetSpot && !isOptimal && <div className="bar-label">●</div>}
