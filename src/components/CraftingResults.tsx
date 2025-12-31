@@ -7,8 +7,8 @@ interface CraftingResultsProps {
 
 export function CraftingResults({ result }: CraftingResultsProps) {
   return (
-    <div className="results">
-      <div className="result-section">
+    <>
+      <div className="card">
         <StashSpaceGraph
           dataPoints={result.allDataPoints}
           currentSlots={result.currentStash.totalSlots}
@@ -17,7 +17,7 @@ export function CraftingResults({ result }: CraftingResultsProps) {
         />
       </div>
 
-      <div className="result-section">
+      <div className="card">
         <div className="recommendation">
           <h3>💡 Optimal Recommendation</h3>
           <div className="recommendation-text">
@@ -83,6 +83,6 @@ export function CraftingResults({ result }: CraftingResultsProps) {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
