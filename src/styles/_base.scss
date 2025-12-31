@@ -1,0 +1,63 @@
+@use 'variables' as *;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: $bg-primary;
+  color: $text-primary;
+  font-size: $font-base;
+  line-height: 1.5;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: $transition-default;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+input, select {
+  font-family: inherit;
+  outline: none;
+  transition: $transition-default;
+}
+
+.app-header {
+  background: $bg-secondary;
+  padding: $spacing-lg $spacing-xl;
+  border-bottom: 2px solid $border-default;
+  text-align: center;
+
+  h1 {
+    font-size: $font-xl;
+    color: $text-accent;
+    font-weight: 600;
+  }
+}
+
+.container {
+  flex: 1;
+  overflow-y: auto;
+  padding: $spacing-xl;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
