@@ -4,6 +4,31 @@
   max-width: 800px;
   width: 100%;
 
+  .selected-item-display {
+    display: flex;
+    align-items: center;
+    gap: $spacing-lg;
+    padding: $spacing-lg;
+    background: $bg-tertiary;
+    border-radius: $radius-md;
+    margin-bottom: $spacing-md;
+
+    .selected-item-image {
+      width: 64px;
+      height: 64px;
+      object-fit: contain;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: $radius-sm;
+      padding: $spacing-sm;
+    }
+
+    h3 {
+      font-size: $font-lg;
+      color: $text-primary;
+      margin: 0;
+    }
+  }
+
   .card {
     background: $bg-card;
     border-radius: $radius-lg;
