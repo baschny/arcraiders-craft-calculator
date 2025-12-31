@@ -61,6 +61,14 @@ export function CraftingResults({ result }: CraftingResultsProps) {
               <>
                 <strong>Don't craft anything.</strong> Your current stash is already optimally
                 organized. Crafting would increase stash usage.
+                {result.minCraftForReduction && (
+                  <>
+                    {' '}
+                    However, if you craft at least{' '}
+                    <strong>{result.minCraftForReduction} items</strong>, you will start saving
+                    space.
+                  </>
+                )}
               </>
             ) : result.optimalCraftAmount === result.maxCraftable ? (
               <>

@@ -106,6 +106,31 @@ function findOptimalCraftAmount(
 }
 
 /**
+ * Find minimum craft amount that reduces stash space
+ */
+function findMinCraftForReduction(
+  recipe: CraftingRecipe,
+  maxCraftable: number,
+  currentSlots: number
+): { amount: number; slots: number } | null {
+  // Try craft amounts from 1 to max
+  for (let craftAmount = 1; craftAmount <= maxCraftable; craftAmount++) {
+    const stash = calculateStashSpace(
+      recipe.craftedItem.stackSize,
+      recipe.craftedItem.incompleteStackSize,
+      recipe.requiredItems,
+      craftAmount
+    );
+
+    if (stash.totalSlots < currentSlots) {
+      return { amount: craftAmount, slots: stash.totalSlots };
+    }
+  }
+
+  return null;
+}
+
+/**
  * Calculate complete crafting result
  */
 export function calculateCrafting(recipe: CraftingRecipe): CraftingResult {
@@ -137,6 +162,9 @@ export function calculateCrafting(recipe: CraftingRecipe): CraftingResult {
     optimal.amount
   );
 
+  // Find minimum craft amount for reduction
+  const minCraft = findMinCraftForReduction(recipe, maxCraftable, currentStash.totalSlots);
+
   return {
     maxCraftable,
     currentStash,
@@ -145,5 +173,12 @@ export function calculateCrafting(recipe: CraftingRecipe): CraftingResult {
     optimalStash,
     spaceChange: afterMaxCraftStash.totalSlots - currentStash.totalSlots,
     optimalSpaceChange: optimalStash.totalSlots - currentStash.totalSlots,
+    minCraftForReduction: minCraft?.amount ?? null,
+    minCraftStash: minCraft ? calculateStashSpace(
+      recipe.craftedItem.stackSize,
+      recipe.craftedItem.incompleteStackSize,
+      recipe.requiredItems,
+      minCraft.amount
+    ) : null,
   };
 }

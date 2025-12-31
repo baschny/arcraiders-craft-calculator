@@ -37,4 +37,6 @@ export interface CraftingResult {
   optimalStash: StashCalculation;
   spaceChange: number;
   optimalSpaceChange: number;
+  minCraftForReduction: number | null;
+  minCraftStash: StashCalculation | null;
 }
