@@ -245,66 +245,75 @@ export function CraftCalculator() {
                 <h4>{item.name || `Item ${index + 1}`}</h4>
               </div>
               {selectedItem && (
-                <div style={{ fontSize: '12px', color: '#888' }}>
-                  Req: {item.amountRequired} | Stack: {item.stackSize}
+                <div style={{ fontSize: '11px', color: '#888' }}>
+                  Need: {item.amountRequired} • Stack: {item.stackSize}
                 </div>
               )}
               {!selectedItem && (
                 <>
-                  <input
-                    type="number"
-                    min="1"
-                    value={item.amountRequired}
-                    onChange={(e) =>
-                      updateRequiredItem(item.id, {
-                        amountRequired: Math.max(1, Number(e.target.value)),
-                      })
-                    }
-                    placeholder="Required"
-                    style={{ width: '90px' }}
-                  />
-                  <select
-                    value={item.stackSize}
-                    onChange={(e) =>
-                      updateRequiredItem(item.id, {
-                        stackSize: Number(e.target.value) as StackSize,
-                      })
-                    }
-                    style={{ width: '80px' }}
-                  >
-                    {STACK_SIZES.map((size) => (
-                      <option key={size} value={size}>
-                        {size}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="input-with-label">
+                    <label>Required</label>
+                    <input
+                      type="number"
+                      min="1"
+                      value={item.amountRequired}
+                      onChange={(e) =>
+                        updateRequiredItem(item.id, {
+                          amountRequired: Math.max(1, Number(e.target.value)),
+                        })
+                      }
+                      style={{ width: '80px' }}
+                    />
+                  </div>
+                  <div className="input-with-label">
+                    <label>Stack</label>
+                    <select
+                      value={item.stackSize}
+                      onChange={(e) =>
+                        updateRequiredItem(item.id, {
+                          stackSize: Number(e.target.value) as StackSize,
+                        })
+                      }
+                      style={{ width: '70px' }}
+                    >
+                      {STACK_SIZES.map((size) => (
+                        <option key={size} value={size}>
+                          {size}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </>
               )}
-              <input
-                type="number"
-                min="0"
-                value={item.amountPossessed}
-                onChange={(e) =>
-                  updateRequiredItem(item.id, {
-                    amountPossessed: Math.max(0, Number(e.target.value)),
-                  })
-                }
-                placeholder="Possessed"
-                style={{ width: '100px' }}
-              />
-              <input
-                type="number"
-                min="0"
-                max={item.stackSize - 1}
-                value={item.incompleteStackSize}
-                onChange={(e) =>
-                  updateRequiredItem(item.id, {
-                    incompleteStackSize: Math.max(0, Number(e.target.value)),
-                  })
-                }
-                placeholder="Incomplete"
-                style={{ width: '100px' }}
-              />
+              <div className="input-with-label">
+                <label>Possessed</label>
+                <input
+                  type="number"
+                  min="0"
+                  value={item.amountPossessed}
+                  onChange={(e) =>
+                    updateRequiredItem(item.id, {
+                      amountPossessed: Math.max(0, Number(e.target.value)),
+                    })
+                  }
+                  style={{ width: '90px' }}
+                />
+              </div>
+              <div className="input-with-label">
+                <label>Incomplete</label>
+                <input
+                  type="number"
+                  min="0"
+                  max={item.stackSize - 1}
+                  value={item.incompleteStackSize}
+                  onChange={(e) =>
+                    updateRequiredItem(item.id, {
+                      incompleteStackSize: Math.max(0, Number(e.target.value)),
+                    })
+                  }
+                  style={{ width: '90px' }}
+                />
+              </div>
               {manualMode && requiredItems.length > 1 && (
                 <button
                   className="remove-btn"

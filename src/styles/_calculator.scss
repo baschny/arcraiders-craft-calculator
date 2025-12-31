@@ -1,7 +1,8 @@
 @use 'variables' as *;
 
 .calculator {
-  flex: 1;
+  flex: 0 1 auto;
+  max-width: 700px;
   min-width: 0;
 
   .selected-item-display {
@@ -94,12 +95,26 @@
     margin-bottom: $spacing-sm;
     position: relative;
     display: grid;
-    grid-template-columns: 1fr auto auto auto auto;
-    gap: $spacing-sm;
+    grid-template-columns: 1fr auto auto auto;
+    gap: $spacing-md;
     align-items: center;
 
     &.manual-mode {
       grid-template-columns: 1fr auto auto auto auto auto;
+    }
+
+    .input-with-label {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-xs;
+
+      label {
+        font-size: 10px;
+        color: $text-secondary;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 500;
+      }
     }
 
     .item-header {
@@ -159,7 +174,7 @@
   }
 
   .results-sidebar {
-    width: 380px;
+    width: 420px;
     position: sticky;
     top: $spacing-xl;
     align-self: flex-start;
@@ -168,6 +183,8 @@
 
     .card {
       margin-bottom: 0;
+      background: linear-gradient(135deg, $bg-secondary, $bg-card);
+      border: 1px solid $border-light;
     }
   }
 
@@ -194,27 +211,44 @@
     }
 
     .stat-card {
-      background: $bg-tertiary;
+      background: linear-gradient(135deg, rgba(79, 195, 247, 0.05), rgba(79, 195, 247, 0.02));
       padding: $spacing-md;
-      border-radius: $radius-sm;
-      border: 1px solid $border-default;
+      border-radius: $radius-md;
+      border: 1px solid rgba(79, 195, 247, 0.2);
+      position: relative;
+      overflow: hidden;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 3px;
+        height: 100%;
+        background: $text-accent;
+      }
 
       .stat-label {
         color: $text-secondary;
         font-size: $font-sm;
         margin-bottom: $spacing-xs;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 500;
       }
 
       .stat-value {
-        font-size: $font-lg;
-        font-weight: 600;
+        font-size: $font-xl;
+        font-weight: 700;
         
         &.positive {
           color: $text-success;
+          text-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
         }
 
         &.negative {
           color: $text-error;
+          text-shadow: 0 0 10px rgba(229, 57, 53, 0.3);
         }
 
         &.neutral {
@@ -230,20 +264,42 @@
     }
 
     .recommendation {
-      background: linear-gradient(135deg, rgba(79, 195, 247, 0.1), rgba(79, 195, 247, 0.05));
+      background: linear-gradient(135deg, rgba(79, 195, 247, 0.15), rgba(79, 195, 247, 0.08));
       border: 2px solid $text-accent;
-      padding: $spacing-md;
-      border-radius: $radius-md;
+      padding: $spacing-lg;
+      border-radius: $radius-lg;
+      box-shadow: 0 4px 12px rgba(79, 195, 247, 0.2);
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, $text-accent, rgba(79, 195, 247, 0.3));
+      }
 
       h3 {
         color: $text-accent;
-        margin-bottom: $spacing-sm;
+        margin-bottom: $spacing-md;
         font-size: $font-md;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
       }
 
       .recommendation-text {
         font-size: $font-sm;
         line-height: 1.6;
+        color: $text-primary;
+        
+        strong {
+          color: $text-accent;
+          font-weight: 600;
+        }
       }
     }
   }
