@@ -17,7 +17,8 @@ export function CraftCalculator() {
   const [loading, setLoading] = useState(true);
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [craftedStackSize, setCraftedStackSize] = useState<StackSize>(10);
-  const [craftedIncomplete, setCraftedIncomplete] = useState(0);
+  const [craftedInStash, setCraftedInStash] = useState(0);
+  const craftedIncomplete = craftedInStash % craftedStackSize;
   const [requiredItems, setRequiredItems] = useState<RequiredItemWithName[]>([]);
   const [manualMode, setManualMode] = useState(false);
 
@@ -41,7 +42,7 @@ export function CraftCalculator() {
   const handleItemSelect = (item: Item) => {
     setSelectedItem(item);
     setCraftedStackSize((item.stackSize as StackSize) || 1);
-    setCraftedIncomplete(0);
+    setCraftedInStash(0);
 
     if (item.recipe) {
       const materials = Object.entries(item.recipe).map(([materialId, amount]) => {
@@ -170,22 +171,19 @@ export function CraftCalculator() {
               Change Item
             </button>
           </div>
-          {craftedStackSize > 1 && (
-            <div className="form-group" style={{ marginTop: '16px' }}>
-              <label>
-                Incomplete Stack Size{' '}
-                <span style={{ color: '#888', fontSize: '12px' }}>(optional)</span>
-              </label>
-              <input
-                type="number"
-                min="0"
-                max={craftedStackSize - 1}
-                value={craftedIncomplete}
-                onChange={(e) => setCraftedIncomplete(Math.max(0, Number(e.target.value)))}
-                placeholder="0"
-              />
-            </div>
-          )}
+          <div className="form-group" style={{ marginTop: '16px' }}>
+            <label>
+              Already in Stash{' '}
+              <span style={{ color: '#888', fontSize: '12px' }}>(optional)</span>
+            </label>
+            <input
+              type="number"
+              min="0"
+              value={craftedInStash}
+              onChange={(e) => setCraftedInStash(Math.max(0, Number(e.target.value)))}
+              placeholder="0"
+            />
+          </div>
         </div>
       )}
 
@@ -208,15 +206,14 @@ export function CraftCalculator() {
             </div>
             <div className="form-group">
               <label>
-                Incomplete Stack Size{' '}
+                Already in Stash{' '}
                 <span style={{ color: '#888', fontSize: '12px' }}>(optional)</span>
               </label>
               <input
                 type="number"
                 min="0"
-                max={craftedStackSize - 1}
-                value={craftedIncomplete}
-                onChange={(e) => setCraftedIncomplete(Math.max(0, Number(e.target.value)))}
+                value={craftedInStash}
+                onChange={(e) => setCraftedInStash(Math.max(0, Number(e.target.value)))}
                 placeholder="0"
               />
             </div>
