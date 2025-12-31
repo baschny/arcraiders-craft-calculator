@@ -1,4 +1,5 @@
 import type { CraftingResult } from '../types/crafting';
+import { StashSpaceGraph } from './StashSpaceGraph';
 
 interface CraftingResultsProps {
   result: CraftingResult;
@@ -20,7 +21,16 @@ export function CraftingResults({ result }: CraftingResultsProps) {
   return (
     <div className="results">
       <div className="result-section">
-        <h3>Crafting Analysis</h3>
+        <StashSpaceGraph
+          dataPoints={result.allDataPoints}
+          currentSlots={result.currentStash.totalSlots}
+          optimalAmount={result.optimalCraftAmount}
+          minCraftForReduction={result.minCraftForReduction}
+        />
+      </div>
+
+      <div className="result-section">
+        <h3>Key Stats</h3>
         <div className="stats-grid">
           <div className="stat-card">
             <div className="stat-label">Max Craftable</div>

@@ -165,6 +165,18 @@ export function calculateCrafting(recipe: CraftingRecipe): CraftingResult {
   // Find minimum craft amount for reduction
   const minCraft = findMinCraftForReduction(recipe, maxCraftable, currentStash.totalSlots);
 
+  // Calculate all data points for graphing
+  const allDataPoints = [];
+  for (let i = 0; i <= maxCraftable; i++) {
+    const stash = calculateStashSpace(
+      recipe.craftedItem.stackSize,
+      recipe.craftedItem.incompleteStackSize,
+      recipe.requiredItems,
+      i
+    );
+    allDataPoints.push({ amount: i, slots: stash.totalSlots });
+  }
+
   return {
     maxCraftable,
     currentStash,
@@ -180,5 +192,6 @@ export function calculateCrafting(recipe: CraftingRecipe): CraftingResult {
       recipe.requiredItems,
       minCraft.amount
     ) : null,
+    allDataPoints,
   };
 }

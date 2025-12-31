@@ -29,6 +29,11 @@ export interface StashCalculation {
   }>;
 }
 
+export interface CraftingDataPoint {
+  amount: number;
+  slots: number;
+}
+
 export interface CraftingResult {
   maxCraftable: number;
   currentStash: StashCalculation;
@@ -39,4 +44,5 @@ export interface CraftingResult {
   optimalSpaceChange: number;
   minCraftForReduction: number | null;
   minCraftStash: StashCalculation | null;
+  allDataPoints: CraftingDataPoint[];
 }
