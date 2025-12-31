@@ -291,31 +291,16 @@ export function CraftCalculator() {
                   type="number"
                   min="0"
                   value={item.amountPossessed}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const possessed = Math.max(0, Number(e.target.value));
                     updateRequiredItem(item.id, {
-                      amountPossessed: Math.max(0, Number(e.target.value)),
-                    })
-                  }
+                      amountPossessed: possessed,
+                      incompleteStackSize: possessed % item.stackSize,
+                    });
+                  }}
                   style={{ width: '90px' }}
                 />
               </div>
-              {item.stackSize > 1 && (
-                <div className="input-with-label">
-                  <label>Incomplete</label>
-                  <input
-                    type="number"
-                    min="0"
-                    max={item.stackSize - 1}
-                    value={item.incompleteStackSize}
-                    onChange={(e) =>
-                      updateRequiredItem(item.id, {
-                        incompleteStackSize: Math.max(0, Number(e.target.value)),
-                      })
-                    }
-                    style={{ width: '90px' }}
-                  />
-                </div>
-              )}
               {manualMode && requiredItems.length > 1 && (
                 <button
                   className="remove-btn"
