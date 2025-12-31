@@ -107,7 +107,8 @@ export function CraftCalculator() {
   }
 
   return (
-    <div className="calculator">
+    <>
+      <div className="calculator">
       {!manualMode && (
         <div className="card">
           <h2 className="card-title">Select Item to Craft</h2>
@@ -225,60 +226,31 @@ export function CraftCalculator() {
         <div className="card">
           <h2 className="card-title">Required Items</h2>
           {requiredItems.map((item, index) => (
-            <div key={item.id} className="required-item">
+            <div key={item.id} className={`required-item ${manualMode ? 'manual-mode' : ''}`}>
               <div className="item-header">
-                {item.name ? (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    {item.imageUrl && (
-                      <img
-                        src={item.imageUrl}
-                        alt={item.name}
-                        style={{
-                          width: '32px',
-                          height: '32px',
-                          objectFit: 'contain',
-                          background: 'rgba(0,0,0,0.3)',
-                          borderRadius: '4px',
-                          padding: '4px',
-                        }}
-                      />
-                    )}
-                    <h4>{item.name}</h4>
-                  </div>
-                ) : (
-                  <h4>Item {index + 1}</h4>
+                {item.imageUrl && (
+                  <img
+                    src={item.imageUrl}
+                    alt={item.name || `Item ${index + 1}`}
+                    style={{
+                      width: '24px',
+                      height: '24px',
+                      objectFit: 'contain',
+                      background: 'rgba(0,0,0,0.3)',
+                      borderRadius: '4px',
+                      padding: '2px',
+                    }}
+                  />
                 )}
-                {manualMode && requiredItems.length > 1 && (
-                  <button
-                    className="remove-btn"
-                    onClick={() => removeRequiredItem(item.id)}
-                    type="button"
-                  >
-                    Remove
-                  </button>
-                )}
+                <h4>{item.name || `Item ${index + 1}`}</h4>
               </div>
-            {!selectedItem && (
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Stack Size</label>
-                  <select
-                    value={item.stackSize}
-                    onChange={(e) =>
-                      updateRequiredItem(item.id, {
-                        stackSize: Number(e.target.value) as StackSize,
-                      })
-                    }
-                  >
-                    {STACK_SIZES.map((size) => (
-                      <option key={size} value={size}>
-                        {size}
-                      </option>
-                    ))}
-                  </select>
+              {selectedItem && (
+                <div style={{ fontSize: '12px', color: '#888' }}>
+                  Req: {item.amountRequired} | Stack: {item.stackSize}
                 </div>
-                <div className="form-group">
-                  <label>Amount Required</label>
+              )}
+              {!selectedItem && (
+                <>
                   <input
                     type="number"
                     min="1"
@@ -288,67 +260,79 @@ export function CraftCalculator() {
                         amountRequired: Math.max(1, Number(e.target.value)),
                       })
                     }
-                    placeholder="1"
+                    placeholder="Required"
+                    style={{ width: '90px' }}
                   />
-                </div>
-              </div>
-            )}
-            {selectedItem && (
-              <div style={{ marginBottom: '12px' }}>
-                <p style={{ color: '#888', fontSize: '14px' }}>
-                  Required: {item.amountRequired} | Stack Size: {item.stackSize}
-                </p>
-              </div>
-            )}
-            <div className="form-row">
-              <div className="form-group">
-                <label>Amount Possessed</label>
-                <input
-                  type="number"
-                  min="0"
-                  value={item.amountPossessed}
-                  onChange={(e) =>
-                    updateRequiredItem(item.id, {
-                      amountPossessed: Math.max(0, Number(e.target.value)),
-                    })
-                  }
-                  placeholder="0"
-                />
-              </div>
-              <div className="form-group">
-                <label>
-                  Incomplete Stack{' '}
-                  <span style={{ color: '#888', fontSize: '12px' }}>(optional)</span>
-                </label>
-                <input
-                  type="number"
-                  min="0"
-                  max={item.stackSize - 1}
-                  value={item.incompleteStackSize}
-                  onChange={(e) =>
-                    updateRequiredItem(item.id, {
-                      incompleteStackSize: Math.max(0, Number(e.target.value)),
-                    })
-                  }
-                  placeholder="0"
-                />
-              </div>
+                  <select
+                    value={item.stackSize}
+                    onChange={(e) =>
+                      updateRequiredItem(item.id, {
+                        stackSize: Number(e.target.value) as StackSize,
+                      })
+                    }
+                    style={{ width: '80px' }}
+                  >
+                    {STACK_SIZES.map((size) => (
+                      <option key={size} value={size}>
+                        {size}
+                      </option>
+                    ))}
+                  </select>
+                </>
+              )}
+              <input
+                type="number"
+                min="0"
+                value={item.amountPossessed}
+                onChange={(e) =>
+                  updateRequiredItem(item.id, {
+                    amountPossessed: Math.max(0, Number(e.target.value)),
+                  })
+                }
+                placeholder="Possessed"
+                style={{ width: '100px' }}
+              />
+              <input
+                type="number"
+                min="0"
+                max={item.stackSize - 1}
+                value={item.incompleteStackSize}
+                onChange={(e) =>
+                  updateRequiredItem(item.id, {
+                    incompleteStackSize: Math.max(0, Number(e.target.value)),
+                  })
+                }
+                placeholder="Incomplete"
+                style={{ width: '100px' }}
+              />
+              {manualMode && requiredItems.length > 1 && (
+                <button
+                  className="remove-btn"
+                  onClick={() => removeRequiredItem(item.id)}
+                  type="button"
+                  style={{ padding: '4px 8px', fontSize: '11px' }}
+                >
+                  ×
+                </button>
+              )}
             </div>
-          </div>
-        ))}
-        {manualMode && (
-          <button className="add-item-btn" onClick={addRequiredItem} type="button">
-            + Add Required Item
-          </button>
-        )}
-      </div>
-      )}
-
-      {canCalculate && (
-        <div className="card">
-          <CraftingResults result={result} />
+          ))}
+          {manualMode && (
+            <button className="add-item-btn" onClick={addRequiredItem} type="button">
+              + Add Required Item
+            </button>
+          )}
         </div>
       )}
-    </div>
+      </div>
+
+      {canCalculate && (
+        <div className="results-sidebar">
+          <div className="card">
+            <CraftingResults result={result} />
+          </div>
+        </div>
+      )}
+    </>
   );
 }

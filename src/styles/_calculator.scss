@@ -1,29 +1,29 @@
 @use 'variables' as *;
 
 .calculator {
-  max-width: 800px;
-  width: 100%;
+  flex: 1;
+  min-width: 0;
 
   .selected-item-display {
     display: flex;
     align-items: center;
-    gap: $spacing-lg;
-    padding: $spacing-lg;
+    gap: $spacing-md;
+    padding: $spacing-md;
     background: $bg-tertiary;
     border-radius: $radius-md;
     margin-bottom: $spacing-md;
 
     .selected-item-image {
-      width: 64px;
-      height: 64px;
+      width: 48px;
+      height: 48px;
       object-fit: contain;
       background: rgba(0, 0, 0, 0.3);
       border-radius: $radius-sm;
-      padding: $spacing-sm;
+      padding: $spacing-xs;
     }
 
     h3 {
-      font-size: $font-lg;
+      font-size: $font-md;
       color: $text-primary;
       margin: 0;
     }
@@ -32,36 +32,37 @@
   .card {
     background: $bg-card;
     border-radius: $radius-lg;
-    padding: $spacing-xl;
-    margin-bottom: $spacing-xl;
+    padding: $spacing-lg;
+    margin-bottom: $spacing-md;
     box-shadow: $shadow-default;
   }
 
   .card-title {
-    font-size: $font-lg;
+    font-size: $font-md;
     font-weight: 600;
-    margin-bottom: $spacing-lg;
+    margin-bottom: $spacing-md;
     color: $text-accent;
   }
 
   .form-group {
-    margin-bottom: $spacing-lg;
+    margin-bottom: $spacing-md;
 
     label {
       display: block;
-      margin-bottom: $spacing-sm;
+      margin-bottom: $spacing-xs;
       font-weight: 500;
       color: $text-primary;
+      font-size: $font-sm;
     }
 
     input, select {
       width: 100%;
-      padding: $spacing-md;
+      padding: $spacing-sm $spacing-md;
       background: $bg-input;
       border: 2px solid $border-default;
-      border-radius: $radius-md;
+      border-radius: $radius-sm;
       color: $text-primary;
-      font-size: $font-base;
+      font-size: $font-sm;
 
       &:focus {
         border-color: $border-focus;
@@ -88,21 +89,44 @@
 
   .required-item {
     background: $bg-tertiary;
-    padding: $spacing-lg;
-    border-radius: $radius-md;
-    margin-bottom: $spacing-md;
+    padding: $spacing-md;
+    border-radius: $radius-sm;
+    margin-bottom: $spacing-sm;
     position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto auto auto auto;
+    gap: $spacing-sm;
+    align-items: center;
+
+    &.manual-mode {
+      grid-template-columns: 1fr auto auto auto auto auto;
+    }
 
     .item-header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: $spacing-md;
+      gap: $spacing-sm;
+      min-width: 0;
 
       h4 {
-        color: $text-accent;
-        font-size: $font-md;
+        color: $text-primary;
+        font-size: $font-sm;
+        font-weight: 500;
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
+
+      img {
+        flex-shrink: 0;
+      }
+    }
+
+    input,
+    select {
+      padding: $spacing-xs $spacing-sm;
+      font-size: $font-sm;
     }
 
     .remove-btn {
@@ -134,29 +158,46 @@
     }
   }
 
+  .results-sidebar {
+    width: 380px;
+    position: sticky;
+    top: $spacing-xl;
+    align-self: flex-start;
+    max-height: calc(100vh - #{$spacing-xl * 2});
+    overflow-y: auto;
+
+    .card {
+      margin-bottom: 0;
+    }
+  }
+
   .results {
     .result-section {
-      margin-bottom: $spacing-xl;
+      margin-bottom: $spacing-lg;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
 
       h3 {
         color: $text-accent;
         margin-bottom: $spacing-md;
-        font-size: $font-lg;
+        font-size: $font-md;
       }
     }
 
     .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: $spacing-lg;
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-md;
       margin-bottom: $spacing-lg;
     }
 
     .stat-card {
       background: $bg-tertiary;
-      padding: $spacing-lg;
-      border-radius: $radius-md;
-      border: 2px solid $border-default;
+      padding: $spacing-md;
+      border-radius: $radius-sm;
+      border: 1px solid $border-default;
 
       .stat-label {
         color: $text-secondary;
@@ -165,7 +206,7 @@
       }
 
       .stat-value {
-        font-size: $font-xl;
+        font-size: $font-lg;
         font-weight: 600;
         
         &.positive {
@@ -191,18 +232,28 @@
     .recommendation {
       background: linear-gradient(135deg, rgba(79, 195, 247, 0.1), rgba(79, 195, 247, 0.05));
       border: 2px solid $text-accent;
-      padding: $spacing-xl;
-      border-radius: $radius-lg;
+      padding: $spacing-md;
+      border-radius: $radius-md;
 
       h3 {
         color: $text-accent;
-        margin-bottom: $spacing-md;
+        margin-bottom: $spacing-sm;
+        font-size: $font-md;
       }
 
       .recommendation-text {
-        font-size: $font-md;
+        font-size: $font-sm;
         line-height: 1.6;
       }
+    }
+  }
+
+  // Responsive styles
+  @media (max-width: 1200px) {
+    .results-sidebar {
+      position: static;
+      width: 100%;
+      margin-top: $spacing-lg;
     }
   }
 }
