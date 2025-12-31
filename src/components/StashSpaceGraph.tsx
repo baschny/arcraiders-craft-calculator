@@ -78,12 +78,13 @@ export function StashSpaceGraph({
                   {isOptimal && <div className="bar-label optimal-label">★</div>}
                   {isSweetSpot && !isOptimal && <div className="bar-label">●</div>}
                 </div>
-                {(index === 0 ||
-                  index === dataPoints.length - 1 ||
-                  isSweetSpot ||
-                  index === minCraftForReduction) && (
-                  <div className="graph-x-label">{point.amount}</div>
-                )}
+                <div className="graph-x-label">
+                  {(index === 0 ||
+                    index === dataPoints.length - 1 ||
+                    isSweetSpot ||
+                    index === minCraftForReduction) &&
+                    point.amount}
+                </div>
               </div>
             );
           })}
