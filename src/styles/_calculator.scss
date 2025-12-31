@@ -9,24 +9,43 @@
     display: flex;
     align-items: center;
     gap: $spacing-md;
-    padding: $spacing-md;
-    background: $bg-tertiary;
+    padding: $spacing-lg;
+    background: linear-gradient(135deg, rgba(79, 195, 247, 0.08), rgba(79, 195, 247, 0.03));
     border-radius: $radius-md;
     margin-bottom: $spacing-md;
+    border: 1px solid rgba(79, 195, 247, 0.2);
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background: $text-accent;
+      border-radius: $radius-sm 0 0 $radius-sm;
+    }
 
     .selected-item-image {
-      width: 48px;
-      height: 48px;
+      width: 56px;
+      height: 56px;
       object-fit: contain;
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: $radius-sm;
-      padding: $spacing-xs;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: $radius-md;
+      padding: $spacing-sm;
+      border: 1px solid rgba(79, 195, 247, 0.3);
     }
 
     h3 {
-      font-size: $font-md;
+      font-size: $font-lg;
       color: $text-primary;
       margin: 0;
+      font-weight: 600;
+    }
+
+    p {
+      margin: $spacing-xs 0 0 0;
     }
   }
 
@@ -94,19 +113,20 @@
     border-radius: $radius-sm;
     margin-bottom: $spacing-sm;
     position: relative;
-    display: grid;
-    grid-template-columns: 1fr auto auto auto;
+    display: flex;
     gap: $spacing-md;
     align-items: center;
 
-    &.manual-mode {
-      grid-template-columns: 1fr auto auto auto auto auto;
+    .item-header {
+      flex: 1;
+      min-width: 0;
     }
 
     .input-with-label {
       display: flex;
       flex-direction: column;
       gap: $spacing-xs;
+      flex-shrink: 0;
 
       label {
         font-size: 10px;
@@ -114,6 +134,7 @@
         text-transform: uppercase;
         letter-spacing: 0.5px;
         font-weight: 500;
+        white-space: nowrap;
       }
     }
 
@@ -121,7 +142,6 @@
       display: flex;
       align-items: center;
       gap: $spacing-sm;
-      min-width: 0;
 
       h4 {
         color: $text-primary;

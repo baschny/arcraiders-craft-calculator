@@ -40,7 +40,7 @@ export function CraftCalculator() {
 
   const handleItemSelect = (item: Item) => {
     setSelectedItem(item);
-    setCraftedStackSize((item.stackSize as StackSize) || 10);
+    setCraftedStackSize((item.stackSize as StackSize) || 1);
     setCraftedIncomplete(0);
 
     if (item.recipe) {
@@ -48,7 +48,7 @@ export function CraftCalculator() {
         const materialItem = getItem(materialId);
         return {
           id: materialId,
-          stackSize: (materialItem?.stackSize as StackSize) || 10,
+          stackSize: (materialItem?.stackSize as StackSize) || 1,
           amountRequired: amount,
           amountPossessed: 0,
           incompleteStackSize: 0,
@@ -170,20 +170,22 @@ export function CraftCalculator() {
               Change Item
             </button>
           </div>
-          <div className="form-group" style={{ marginTop: '16px' }}>
-            <label>
-              Incomplete Stack Size{' '}
-              <span style={{ color: '#888', fontSize: '12px' }}>(optional)</span>
-            </label>
-            <input
-              type="number"
-              min="0"
-              max={craftedStackSize - 1}
-              value={craftedIncomplete}
-              onChange={(e) => setCraftedIncomplete(Math.max(0, Number(e.target.value)))}
-              placeholder="0"
-            />
-          </div>
+          {craftedStackSize > 1 && (
+            <div className="form-group" style={{ marginTop: '16px' }}>
+              <label>
+                Incomplete Stack Size{' '}
+                <span style={{ color: '#888', fontSize: '12px' }}>(optional)</span>
+              </label>
+              <input
+                type="number"
+                min="0"
+                max={craftedStackSize - 1}
+                value={craftedIncomplete}
+                onChange={(e) => setCraftedIncomplete(Math.max(0, Number(e.target.value)))}
+                placeholder="0"
+              />
+            </div>
+          )}
         </div>
       )}
 
@@ -242,13 +244,11 @@ export function CraftCalculator() {
                     }}
                   />
                 )}
-                <h4>{item.name || `Item ${index + 1}`}</h4>
+                <h4>
+                  {selectedItem && <span style={{ color: '#4fc3f7', marginRight: '6px' }}>{item.amountRequired}x</span>}
+                  {item.name || `Item ${index + 1}`}
+                </h4>
               </div>
-              {selectedItem && (
-                <div style={{ fontSize: '11px', color: '#888' }}>
-                  Need: {item.amountRequired} • Stack: {item.stackSize}
-                </div>
-              )}
               {!selectedItem && (
                 <>
                   <div className="input-with-label">
@@ -299,21 +299,23 @@ export function CraftCalculator() {
                   style={{ width: '90px' }}
                 />
               </div>
-              <div className="input-with-label">
-                <label>Incomplete</label>
-                <input
-                  type="number"
-                  min="0"
-                  max={item.stackSize - 1}
-                  value={item.incompleteStackSize}
-                  onChange={(e) =>
-                    updateRequiredItem(item.id, {
-                      incompleteStackSize: Math.max(0, Number(e.target.value)),
-                    })
-                  }
-                  style={{ width: '90px' }}
-                />
-              </div>
+              {item.stackSize > 1 && (
+                <div className="input-with-label">
+                  <label>Incomplete</label>
+                  <input
+                    type="number"
+                    min="0"
+                    max={item.stackSize - 1}
+                    value={item.incompleteStackSize}
+                    onChange={(e) =>
+                      updateRequiredItem(item.id, {
+                        incompleteStackSize: Math.max(0, Number(e.target.value)),
+                      })
+                    }
+                    style={{ width: '90px' }}
+                  />
+                </div>
+              )}
               {manualMode && requiredItems.length > 1 && (
                 <button
                   className="remove-btn"
