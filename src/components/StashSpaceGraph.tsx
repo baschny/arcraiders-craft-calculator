@@ -53,7 +53,8 @@ export function StashSpaceGraph({
     return 'rgba(79, 195, 247, 0.3)'; // Neutral
   };
 
-  const maxHeight = 120;
+  const maxHeight = 100;
+  const minBarHeight = 20;
 
   return (
     <div className="stash-graph">
@@ -61,7 +62,7 @@ export function StashSpaceGraph({
       <div className="graph-container">
         <div className="graph-bars">
           {dataPoints.map((point, index) => {
-            const barHeight = ((point.slots - minSlots) / slotRange) * maxHeight + 20;
+            const barHeight = ((point.slots - minSlots) / slotRange) * maxHeight + minBarHeight;
             const isSweetSpot = sweetSpots.includes(index);
             const isOptimal = index === optimalAmount;
 
