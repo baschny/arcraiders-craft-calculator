@@ -6,18 +6,6 @@ interface CraftingResultsProps {
 }
 
 export function CraftingResults({ result }: CraftingResultsProps) {
-  const getSpaceChangeClass = (change: number) => {
-    if (change < 0) return 'positive';
-    if (change > 0) return 'negative';
-    return 'neutral';
-  };
-
-  const formatSpaceChange = (change: number) => {
-    if (change === 0) return 'No change';
-    if (change < 0) return `${Math.abs(change)} less`;
-    return `${change} more`;
-  };
-
   return (
     <div className="results">
       <div className="result-section">
@@ -27,40 +15,6 @@ export function CraftingResults({ result }: CraftingResultsProps) {
           optimalAmount={result.optimalCraftAmount}
           minCraftForReduction={result.minCraftForReduction}
         />
-      </div>
-
-      <div className="result-section">
-        <h3>Key Stats</h3>
-        <div className="stats-grid">
-          <div className="stat-card">
-            <div className="stat-label">Max Craftable</div>
-            <div className="stat-value neutral">{result.maxCraftable}</div>
-            <div className="stat-detail">items you can craft</div>
-          </div>
-
-          <div className="stat-card">
-            <div className="stat-label">Current Stash Usage</div>
-            <div className="stat-value neutral">{result.currentStash.totalSlots}</div>
-            <div className="stat-detail">slots used</div>
-          </div>
-
-          <div className="stat-card">
-            <div className="stat-label">After Max Craft</div>
-            <div className="stat-value neutral">{result.afterMaxCraftStash.totalSlots}</div>
-            <div className="stat-detail">
-              {formatSpaceChange(result.spaceChange)} slots
-            </div>
-          </div>
-
-          <div className="stat-card">
-            <div className="stat-label">Space Impact (Max)</div>
-            <div className={`stat-value ${getSpaceChangeClass(result.spaceChange)}`}>
-              {result.spaceChange > 0 ? '+' : ''}
-              {result.spaceChange}
-            </div>
-            <div className="stat-detail">slot change</div>
-          </div>
-        </div>
       </div>
 
       <div className="result-section">
