@@ -35,8 +35,15 @@ export function StashSpaceGraph({
   }
 
   const getBarColor = (index: number, slots: number) => {
+    // For optimal, use category color (green/blue) not distinct optimal color
     if (index === optimalAmount) {
-      return '#4caf50'; // Green for optimal
+      if (slots < currentSlots) {
+        return '#4caf50'; // Green for optimal that saves space
+      } else if (slots > currentSlots) {
+        return 'rgba(229, 57, 53, 0.6)'; // Red for optimal that uses more
+      } else {
+        return 'rgba(79, 195, 247, 0.5)'; // Blue for optimal with same space
+      }
     }
     if (sweetSpots.includes(index)) {
       return '#66bb6a'; // Light green for sweet spots
