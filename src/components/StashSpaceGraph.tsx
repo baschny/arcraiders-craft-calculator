@@ -73,13 +73,16 @@ export function StashSpaceGraph({
             const isSweetSpot = sweetSpots.includes(index);
             const isOptimal = index === optimalAmount;
 
+            const barColor = getBarColor(index, point.slots);
+            const showOptimalBorder = isOptimal && point.slots < currentSlots;
+
             return (
               <div key={index} className="graph-bar-wrapper">
                 <div
-                  className={`graph-bar ${isSweetSpot ? 'sweet-spot' : ''} ${isOptimal ? 'optimal' : ''}`}
+                  className={`graph-bar ${isSweetSpot ? 'sweet-spot' : ''} ${showOptimalBorder ? 'optimal' : ''}`}
                   style={{
                     height: `${barHeight}px`,
-                    backgroundColor: getBarColor(index, point.slots),
+                    backgroundColor: barColor,
                   }}
                   title={`Craft ${point.amount}: ${point.slots} slots (${point.slots - currentSlots >= 0 ? '+' : ''}${point.slots - currentSlots})`}
                 >
