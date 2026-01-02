@@ -154,35 +154,42 @@ export function CraftCalculator() {
                 className="selected-item-image"
               />
             )}
-            <div>
-              <h3>{selectedItem.name.en}</h3>
-              <p style={{ color: '#888', fontSize: '14px' }}>
-                Stack Size: {selectedItem.stackSize}
-              </p>
+            <div className="item-header" style={{ flex: 1 }}>
+              <div>
+                <h3 style={{ margin: 0 }}>{selectedItem.name.en}</h3>
+                <p style={{ color: '#888', fontSize: '14px', margin: '4px 0 0 0' }}>
+                  Stack Size: {selectedItem.stackSize}
+                </p>
+                <button
+                  onClick={() => {
+                    setSelectedItem(null);
+                    setRequiredItems([]);
+                  }}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#4fc3f7',
+                    textDecoration: 'underline',
+                    cursor: 'pointer',
+                    padding: 0,
+                    fontSize: '12px',
+                    marginTop: '4px',
+                  }}
+                >
+                  Change Item
+                </button>
+              </div>
             </div>
-            <button
-              onClick={() => {
-                setSelectedItem(null);
-                setRequiredItems([]);
-              }}
-              className="remove-btn"
-              style={{ marginLeft: 'auto' }}
-            >
-              Change Item
-            </button>
-          </div>
-          <div className="form-group" style={{ marginTop: '16px' }}>
-            <label>
-              Already in Stash{' '}
-              <span style={{ color: '#888', fontSize: '12px' }}>(optional)</span>
-            </label>
-            <input
-              type="number"
-              min="0"
-              value={craftedInStash}
-              onChange={(e) => setCraftedInStash(Math.max(0, Number(e.target.value)))}
-              placeholder="0"
-            />
+            <div className="input-with-label">
+              <label>In Stash</label>
+              <input
+                type="number"
+                min="0"
+                value={craftedInStash}
+                onChange={(e) => setCraftedInStash(Math.max(0, Number(e.target.value)))}
+                placeholder="0"
+              />
+            </div>
           </div>
         </div>
       )}
@@ -259,7 +266,6 @@ export function CraftCalculator() {
                           amountRequired: Math.max(1, Number(e.target.value)),
                         })
                       }
-                      style={{ width: '80px' }}
                     />
                   </div>
                   <div className="input-with-label">
@@ -271,7 +277,6 @@ export function CraftCalculator() {
                           stackSize: Number(e.target.value) as StackSize,
                         })
                       }
-                      style={{ width: '70px' }}
                     >
                       {STACK_SIZES.map((size) => (
                         <option key={size} value={size}>
@@ -283,7 +288,7 @@ export function CraftCalculator() {
                 </>
               )}
               <div className="input-with-label">
-                <label>Possessed</label>
+                <label>In Stash</label>
                 <input
                   type="number"
                   min="0"
@@ -295,7 +300,6 @@ export function CraftCalculator() {
                       incompleteStackSize: possessed % item.stackSize,
                     });
                   }}
-                  style={{ width: '90px' }}
                 />
               </div>
               {manualMode && requiredItems.length > 1 && (
@@ -321,9 +325,7 @@ export function CraftCalculator() {
 
       {canCalculate && (
         <div className="results-sidebar">
-          <div className="card">
-            <CraftingResults result={result} />
-          </div>
+          <CraftingResults result={result} />
         </div>
       )}
     </>

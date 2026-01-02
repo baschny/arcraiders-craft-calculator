@@ -44,14 +44,13 @@ function calculateStashSpace(
     const used = craftCount * item.amountRequired;
     const remaining = item.amountPossessed - used;
 
-    if (remaining > 0 || item.incompleteStackSize > 0) {
-      const totalAmount = remaining + item.incompleteStackSize;
-      const fullStacks = Math.floor(totalAmount / item.stackSize);
-      const remainder = totalAmount % item.stackSize;
-      const slots = calculateSlots(totalAmount, item.stackSize);
+    if (remaining > 0) {
+      const fullStacks = Math.floor(remaining / item.stackSize);
+      const remainder = remaining % item.stackSize;
+      const slots = calculateSlots(remaining, item.stackSize);
       items.push({
         stackSize: item.stackSize,
-        amount: totalAmount,
+        amount: remaining,
         fullStacks,
         remainder,
         slots,
@@ -82,7 +81,8 @@ function calculateMaxCraftable(requiredItems: RequiredItem[]): number {
  */
 function findOptimalCraftAmount(
   recipe: CraftingRecipe,
-  maxCraftable: number
+  maxCraftable: number,
+  currentSlots: number
 ): { amount: number; slots: number } {
   let minSlots = Infinity;
   let optimalAmount = 0;
@@ -99,6 +99,52 @@ function findOptimalCraftAmount(
     if (stash.totalSlots < minSlots) {
       minSlots = stash.totalSlots;
       optimalAmount = craftAmount;
+    }
+  }
+
+  // If the minimum slots found is still more than current (all crafting increases slots),
+  // find the maximum craft amount that keeps slots equal to current
+  if (minSlots > currentSlots) {
+    let maxSameSlots = 0;
+    for (let craftAmount = 1; craftAmount <= maxCraftable; craftAmount++) {
+      const stash = calculateStashSpace(
+        recipe.craftedItem.stackSize,
+        recipe.craftedItem.incompleteStackSize,
+        recipe.requiredItems,
+        craftAmount
+      );
+      
+      if (stash.totalSlots === currentSlots) {
+        maxSameSlots = craftAmount;
+      }
+    }
+    
+    // If we found amounts that keep slots equal, use the maximum one
+    if (maxSameSlots > 0) {
+      optimalAmount = maxSameSlots;
+      minSlots = currentSlots;
+    }
+  }
+  // If optimal is 0 (don't craft) but there's an incomplete stack,
+  // recommend filling the incomplete stack instead (unless current is already optimal)
+  else if (optimalAmount === 0 && recipe.craftedItem.incompleteStackSize > 0) {
+    const incomplete = recipe.craftedItem.incompleteStackSize;
+    const toFillStack = recipe.craftedItem.stackSize - incomplete;
+    
+    // Only recommend filling if we can craft enough and it doesn't increase slots
+    if (toFillStack <= maxCraftable) {
+      const stashAfterFilling = calculateStashSpace(
+        recipe.craftedItem.stackSize,
+        recipe.craftedItem.incompleteStackSize,
+        recipe.requiredItems,
+        toFillStack
+      );
+      
+      // Only recommend filling if it maintains or reduces slot count
+      if (stashAfterFilling.totalSlots <= currentSlots) {
+        optimalAmount = toFillStack;
+        minSlots = stashAfterFilling.totalSlots;
+      }
     }
   }
 
@@ -153,7 +199,7 @@ export function calculateCrafting(recipe: CraftingRecipe): CraftingResult {
   );
 
   // Find optimal craft amount
-  const optimal = findOptimalCraftAmount(recipe, maxCraftable);
+  const optimal = findOptimalCraftAmount(recipe, maxCraftable, currentStash.totalSlots);
 
   const optimalStash = calculateStashSpace(
     recipe.craftedItem.stackSize,

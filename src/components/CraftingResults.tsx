@@ -58,26 +58,28 @@ export function CraftingResults({ result }: CraftingResultsProps) {
               </>
             ) : (
               <>
-                <strong>Craft exactly {result.optimalCraftAmount} items.</strong> This will
-                minimize stash usage to {result.optimalStash.totalSlots} slots (
+                <strong>Craft exactly {result.optimalCraftAmount} items.</strong>{' '}
                 {result.optimalSpaceChange < 0 ? (
                   <>
+                    This will minimize stash usage to {result.optimalStash.totalSlots} slots (
                     <span style={{ color: '#4caf50' }}>
                       saving {Math.abs(result.optimalSpaceChange)} slot
                       {Math.abs(result.optimalSpaceChange) !== 1 ? 's' : ''}
                     </span>
+                    ).
                   </>
                 ) : result.optimalSpaceChange > 0 ? (
                   <>
+                    This will use {result.optimalStash.totalSlots} slots (
                     <span style={{ color: '#ff9800' }}>
-                      using {result.optimalSpaceChange} more slot
+                      {result.optimalSpaceChange} more slot
                       {result.optimalSpaceChange !== 1 ? 's' : ''}
                     </span>
+                    ).
                   </>
                 ) : (
-                  'no change'
+                  'This will keep the current stash usage, but fill all slots to maximum stacking size.'
                 )}
-                ).
               </>
             )}
           </div>

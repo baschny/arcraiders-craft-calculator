@@ -19,21 +19,6 @@ export function StashSpaceGraph({
   const minSlots = Math.min(...dataPoints.map((p) => p.slots));
   const slotRange = maxSlots - minSlots || 1;
 
-  // Find all local minima (sweet spots)
-  const sweetSpots: number[] = [];
-  for (let i = 1; i < dataPoints.length - 1; i++) {
-    if (
-      dataPoints[i].slots < dataPoints[i - 1].slots &&
-      dataPoints[i].slots < dataPoints[i + 1].slots
-    ) {
-      sweetSpots.push(i);
-    }
-  }
-  // Include optimal if not already included
-  if (!sweetSpots.includes(optimalAmount)) {
-    sweetSpots.push(optimalAmount);
-  }
-
   const getBarColor = (index: number, slots: number) => {
     // For optimal, use category color (green/blue) not distinct optimal color
     if (index === optimalAmount) {
@@ -45,11 +30,15 @@ export function StashSpaceGraph({
         return 'rgba(79, 195, 247, 0.5)'; // Blue for optimal with same space
       }
     }
-    if (sweetSpots.includes(index)) {
-      return '#66bb6a'; // Light green for sweet spots
-    }
+    // Min for reduction uses same color logic as optimal but without star
     if (minCraftForReduction && index === minCraftForReduction) {
-      return '#ffa726'; // Orange for minimum threshold
+      if (slots < currentSlots) {
+        return '#4caf50'; // Green - same as optimal
+      } else if (slots > currentSlots) {
+        return 'rgba(229, 57, 53, 0.6)'; // Red - same as optimal
+      } else {
+        return 'rgba(79, 195, 247, 0.5)'; // Blue - same as optimal
+      }
     }
     if (slots < currentSlots) {
       return 'rgba(76, 175, 80, 0.4)'; // Faded green for savings
@@ -70,7 +59,6 @@ export function StashSpaceGraph({
         <div className="graph-bars">
           {dataPoints.map((point, index) => {
             const barHeight = ((point.slots - minSlots) / slotRange) * maxHeight + minBarHeight;
-            const isSweetSpot = sweetSpots.includes(index);
             const isOptimal = index === optimalAmount;
 
             const barColor = getBarColor(index, point.slots);
@@ -79,7 +67,7 @@ export function StashSpaceGraph({
             return (
               <div key={index} className="graph-bar-wrapper">
                 <div
-                  className={`graph-bar ${isSweetSpot ? 'sweet-spot' : ''} ${showOptimalBorder ? 'optimal' : ''}`}
+                  className={`graph-bar ${showOptimalBorder ? 'optimal' : ''}`}
                   style={{
                     height: `${barHeight}px`,
                     backgroundColor: barColor,
@@ -87,12 +75,10 @@ export function StashSpaceGraph({
                   title={`Craft ${point.amount}: ${point.slots} slots (${point.slots - currentSlots >= 0 ? '+' : ''}${point.slots - currentSlots})`}
                 >
                   {isOptimal && <div className="bar-label optimal-label">★</div>}
-                  {isSweetSpot && !isOptimal && <div className="bar-label">●</div>}
                 </div>
                 <div className="graph-x-label">
                   {(index === 0 ||
                     index === dataPoints.length - 1 ||
-                    isSweetSpot ||
                     index === minCraftForReduction) &&
                     point.amount}
                 </div>
@@ -112,16 +98,6 @@ export function StashSpaceGraph({
           <div className="legend-color" style={{ background: '#4caf50' }} />
           <span>★ Optimal</span>
         </div>
-        <div className="legend-item">
-          <div className="legend-color" style={{ background: '#66bb6a' }} />
-          <span>● Sweet Spot</span>
-        </div>
-        {minCraftForReduction && (
-          <div className="legend-item">
-            <div className="legend-color" style={{ background: '#ffa726' }} />
-            <span>Min for Reduction</span>
-          </div>
-        )}
         <div className="legend-item">
           <div className="legend-color" style={{ background: 'rgba(76, 175, 80, 0.4)' }} />
           <span>Saves Space</span>
