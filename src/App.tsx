@@ -1,15 +1,16 @@
 import { CraftCalculator } from './components/CraftCalculator';
+import { Header } from './components/Header';
+import { Footer } from './components/Footer';
 import './styles/main.scss';
 
 function App() {
   return (
     <>
-      <header className="app-header">
-        <h1>Arc Raiders - Craft Calculator</h1>
-      </header>
+      <Header />
       <main className="container">
         <CraftCalculator />
       </main>
+      <Footer />
     </>
   );
 }

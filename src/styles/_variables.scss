@@ -2,6 +2,7 @@
 $bg-primary: #1a1a1a;
 $bg-secondary: #2c2c2c;
 $bg-tertiary: #3c3c3c;
+$bg-quaternary: #4c4c4c;
 $bg-card: #2a2a2a;
 $bg-input: #222;
 
@@ -27,21 +28,35 @@ $spacing-lg: 16px;
 $spacing-xl: 24px;
 $spacing-2xl: 32px;
 
+// Gaps
+$gap-xs: 6px;
+$gap-sm: 8px;
+$gap-md: 12px;
+
+// Border widths
+$border-width-default: 2px;
+$border-width-thick: 3px;
+$border-width-thin: 1px;
+
 // Border radius
 $radius-sm: 4px;
 $radius-md: 8px;
 $radius-lg: 12px;
 
 // Font sizes
+$font-xs: 11px;
 $font-sm: 12px;
 $font-base: 14px;
-$font-md: 16px;
-$font-lg: 18px;
-$font-xl: 24px;
+$font-md: 15px;
+$font-lg: 16px;
+$font-xl: 18px;
+$font-2xl: 20px;
+$font-3xl: 24px;
 
 // Shadows
 $shadow-default: 0 4px 12px rgba(0, 0, 0, 0.3);
 $shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.4);
+$shadow-header: 0 2px 8px rgba(0, 0, 0, 0.3);
 
 // Transitions
 $transition-default: all 0.2s ease;

@@ -39,7 +39,6 @@
     }
 
     h3 {
-      font-size: $font-lg;
       color: $text-primary;
       margin: 0;
       font-weight: 600;
@@ -52,7 +51,6 @@
 
 
   .card-title {
-    font-size: $font-md;
     font-weight: 600;
     margin-bottom: $spacing-md;
     color: $text-accent;
@@ -123,7 +121,6 @@
 
       h4 {
         color: $text-primary;
-        font-size: $font-sm;
         font-weight: 500;
         margin: 0;
         white-space: nowrap;
@@ -173,7 +170,7 @@
   flex-shrink: 0;
 
   label {
-    font-size: 10px;
+    font-size: 11px;
     color: $text-secondary;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -232,7 +229,6 @@
     h3 {
       color: $text-accent;
       margin-bottom: $spacing-md;
-      font-size: $font-md;
     }
   }
 
@@ -308,7 +304,6 @@
   h3 {
     color: $text-accent;
     margin-bottom: $spacing-md;
-    font-size: $font-md;
     font-weight: 600;
     display: flex;
     align-items: center;
