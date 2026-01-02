@@ -69,7 +69,7 @@ export function StashSpaceGraph({
         </div>
         <div className="graph-y-axis">
           <div className="y-label">{maxSlots} slots</div>
-          <div className="y-label" style={{ position: 'absolute', bottom: '0' }}>
+          <div className="y-label" style={{ position: 'absolute', bottom: '0', width: '100%' }}>
             {minSlots} slots
           </div>
         </div>
