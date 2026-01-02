@@ -37,6 +37,20 @@ Available stack sizes match the game: 3, 5, 10, 15, 50, 100
 npm install
 \`\`\`
 
+### Updating Game Data
+
+The calculator uses item data from the `arcraiders-data` repository. To update the item data:
+
+\`\`\`bash
+./update-data.sh
+\`\`\`
+
+This script copies the latest item JSON files from `../arcraiders-data/items/` to `public/data/items/`.
+
+**Requirements:**
+- The `arcraiders-data` repository must be cloned in the parent directory
+- Run this script whenever the game data is updated
+
 ### Run Dev Server
 
 \`\`\`bash
