@@ -8,6 +8,21 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;700&display=swap" rel="stylesheet" />
     <title>ARC Raiders Craft Calculator</title>
+    
+    <!-- Google tag (gtag.js) - Only loads in production -->
+    <script type="module">
+      if (import.meta.env.PROD) {
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-P49K6VETPH';
+        document.head.appendChild(script);
+        
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-P49K6VETPH');
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

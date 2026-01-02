@@ -212,6 +212,7 @@ export function calculateCrafting(recipe: CraftingRecipe): CraftingResult {
       recipe.requiredItems,
       minCraft.amount
     ) : null,
+    amountToCraft: optimal.amount,
     allDataPoints,
   };
 }

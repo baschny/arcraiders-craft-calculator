@@ -5,6 +5,7 @@ import { calculateCrafting } from '../utils/calculations';
 import { CraftingResults } from './CraftingResults';
 import { ItemSearch } from './ItemSearch';
 import { loadItems, getItem } from '../utils/itemData';
+import { trackCalculation } from '../utils/analytics';
 
 interface RequiredItemWithName extends RequiredItem {
   name?: string;
@@ -62,6 +63,13 @@ export function CraftCalculator() {
 
   const result = calculateCrafting(recipe);
   const canCalculate = requiredItems.some((item) => item.amountPossessed > 0);
+  
+  // Track calculation when items are possessed and result changes
+  useEffect(() => {
+    if (canCalculate && selectedItem && result.amountToCraft > 0) {
+      trackCalculation(selectedItem.name.en, selectedItem.id, result.amountToCraft);
+    }
+  }, [canCalculate, selectedItem, result.amountToCraft]);
 
   if (loading) {
     return (
