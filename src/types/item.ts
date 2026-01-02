@@ -25,21 +25,10 @@ export interface ItemRecipe {
 
 export interface Item {
   id: string;
-  name: LocalizedString;
-  description?: LocalizedString;
-  type?: string;
-  value?: number;
-  rarity?: string;
-  stackSize?: number;
-  weightKg?: number;
+  name: string;
+  stackSize: number;
   imageFilename?: string;
   recipe?: ItemRecipe;
-  craftBench?: string;
-  recyclesInto?: ItemRecipe;
-  salvagesInto?: ItemRecipe;
-  foundIn?: string;
-  updatedAt?: string;
-  effects?: Record<string, unknown>;
 }
 
 export interface ItemDatabase {

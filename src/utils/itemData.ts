@@ -17,25 +17,12 @@ export async function loadItems(): Promise<ItemDatabase> {
 
   loadingPromise = (async () => {
     try {
-      // Fetch the list of item files
-      const response = await fetch('/data/items-list.json');
+      const response = await fetch('/data/items.json');
       if (!response.ok) {
-        throw new Error('Failed to load items list');
+        throw new Error('Failed to load items database');
       }
 
-      const fileList: string[] = await response.json();
-      const items: ItemDatabase = {};
-
-      // Load all item files in parallel
-      const itemPromises = fileList.map(async (filename) => {
-        const itemResponse = await fetch(`/data/items/${filename}`);
-        if (itemResponse.ok) {
-          const item: Item = await itemResponse.json();
-          items[item.id] = item;
-        }
-      });
-
-      await Promise.all(itemPromises);
+      const items: ItemDatabase = await response.json();
       itemDatabase = items;
       return items;
     } catch (error) {
@@ -66,14 +53,14 @@ export function searchItems(query: string, limit = 20): Item[] {
   const items = Object.values(itemDatabase);
 
   return items
-    .filter((item) => item.name.en.toLowerCase().includes(lowerQuery))
+    .filter((item) => item.name.toLowerCase().includes(lowerQuery))
     .sort((a, b) => {
       // Prioritize items that start with the query
-      const aStarts = a.name.en.toLowerCase().startsWith(lowerQuery);
-      const bStarts = b.name.en.toLowerCase().startsWith(lowerQuery);
+      const aStarts = a.name.toLowerCase().startsWith(lowerQuery);
+      const bStarts = b.name.toLowerCase().startsWith(lowerQuery);
       if (aStarts && !bStarts) return -1;
       if (!aStarts && bStarts) return 1;
-      return a.name.en.localeCompare(b.name.en);
+      return a.name.localeCompare(b.name);
     })
     .slice(0, limit);
 }
@@ -88,7 +75,7 @@ export function getCraftableItems(): Item[] {
 
   return Object.values(itemDatabase)
     .filter((item) => item.recipe && Object.keys(item.recipe).length > 0)
-    .sort((a, b) => a.name.en.localeCompare(b.name.en));
+    .sort((a, b) => a.name.localeCompare(b.name));
 }
 
 /**

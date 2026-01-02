@@ -50,7 +50,7 @@ The application relies on item data that can be synced from the [RaidTheory/arcr
     ```bash
     ./update-data.sh
     ```
-    This will sync JSON definitions and regenerate the items list in `public/data/`.
+    This will sync JSON definitions and regenerate the items database in `public/data/items.json`.
 
 ### Available Scripts
 

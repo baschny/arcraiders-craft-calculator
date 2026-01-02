@@ -50,7 +50,7 @@ export function ItemSearch({ onSelect, placeholder = 'Search items...', filter }
 
   const handleSelect = (item: Item) => {
     // Track item selection
-    trackItemCrafted(item.name.en, item.id);
+    trackItemCrafted(item.name, item.id);
     
     onSelect(item);
     setQuery('');
@@ -103,10 +103,10 @@ export function ItemSearch({ onSelect, placeholder = 'Search items...', filter }
               onMouseEnter={() => setSelectedIndex(index)}
             >
               {item.imageFilename && (
-                <img src={item.imageFilename} alt={item.name.en} className="item-icon" />
+                <img src={item.imageFilename} alt={item.name} className="item-icon" />
               )}
               <div className="item-info">
-                <div className="item-name">{item.name.en}</div>
+                <div className="item-name">{item.name}</div>
                 {item.stackSize && (
                   <div className="item-meta">Stack: {item.stackSize}</div>
                 )}

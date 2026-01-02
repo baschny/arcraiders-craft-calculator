@@ -4,7 +4,7 @@
 # This script copies the latest item JSON files into the public data directory
 
 SOURCE_DIR="../arcraiders-data/items"
-TARGET_DIR="public/data/items"
+TARGET_FILE="public/data/items.json"
 
 if [ ! -d "$SOURCE_DIR" ]; then
   echo "Error: Source directory '$SOURCE_DIR' not found."
@@ -12,37 +12,35 @@ if [ ! -d "$SOURCE_DIR" ]; then
   exit 1
 fi
 
-if [ ! -d "$TARGET_DIR" ]; then
-  echo "Error: Target directory '$TARGET_DIR' not found."
-  exit 1
+echo "Generating $TARGET_FILE from $SOURCE_DIR..."
+
+# Check if jq is installed
+if ! command -v jq &> /dev/null; then
+    echo "Error: jq is not installed. Please install it to continue."
+    exit 1
 fi
 
-echo "Copying item data from $SOURCE_DIR to $TARGET_DIR..."
-/bin/cp -f "$SOURCE_DIR"/*.json "$TARGET_DIR/"
-
-if [ $? -ne 0 ]; then
-  echo "✗ Failed to copy item data."
-  exit 1
-fi
-
-echo "✓ Item data copied successfully!"
-echo "Files copied:"
-ls -1 "$TARGET_DIR"/*.json | wc -l | xargs echo "  Total:"
-
-echo ""
-echo "Generating items-list.json..."
-
-# Generate items-list.json with all item filenames
-ITEMS_LIST="public/data/items-list.json"
-echo '[' > "$ITEMS_LIST"
-ls -1 "$TARGET_DIR"/*.json | xargs -n 1 basename | sed 's/^/  "/;s/$/",/' | sed '$ s/,$//' >> "$ITEMS_LIST"
-echo ']' >> "$ITEMS_LIST"
+# Combine all JSON files into a single object with item IDs as keys
+# We only extract the fields we need to keep the file size manageable
+jq -n '
+  reduce inputs as $item ({}; 
+    . + { 
+      ($item.id): {
+        id: $item.id,
+        name: $item.name.en,
+        stackSize: ($item.stackSize // 1),
+        imageFilename: $item.imageFilename,
+        recipe: $item.recipe
+      } 
+    }
+  )
+' "$SOURCE_DIR"/*.json > "$TARGET_FILE"
 
 if [ $? -eq 0 ]; then
-  echo "✓ items-list.json generated successfully!"
-  ITEM_COUNT=$(ls -1 "$TARGET_DIR"/*.json | wc -l | xargs)
+  echo "✓ $TARGET_FILE generated successfully!"
+  ITEM_COUNT=$(jq 'length' "$TARGET_FILE")
   echo "  Total items: $ITEM_COUNT"
 else
-  echo "✗ Failed to generate items-list.json."
+  echo "✗ Failed to generate $TARGET_FILE."
   exit 1
 fi

@@ -43,7 +43,7 @@ export function CraftCalculator() {
           amountRequired: amount,
           amountPossessed: 0,
           incompleteStackSize: 0,
-          name: materialItem?.name.en || materialId,
+          name: materialItem?.name || materialId,
           imageUrl: materialItem?.imageFilename,
         };
       });
@@ -67,7 +67,7 @@ export function CraftCalculator() {
   // Track calculation when items are possessed and result changes
   useEffect(() => {
     if (canCalculate && selectedItem && result.amountToCraft > 0) {
-      trackCalculation(selectedItem.name.en, selectedItem.id, result.amountToCraft);
+      trackCalculation(selectedItem.name, selectedItem.id, result.amountToCraft);
     }
   }, [canCalculate, selectedItem, result.amountToCraft]);
 
@@ -103,13 +103,13 @@ export function CraftCalculator() {
             {selectedItem.imageFilename && (
               <img
                 src={selectedItem.imageFilename}
-                alt={selectedItem.name.en}
+                alt={selectedItem.name}
                 className="selected-item-image"
               />
             )}
             <div className="item-header" style={{ flex: 1 }}>
               <div>
-                <h3 style={{ margin: 0 }}>{selectedItem.name.en}</h3>
+                <h3 style={{ margin: 0 }}>{selectedItem.name}</h3>
                 <p style={{ color: '#888', fontSize: '14px', margin: '4px 0 0 0' }}>
                   Stack Size: {selectedItem.stackSize}
                 </p>
