@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import type { Item } from '../types/item';
 import { searchItems } from '../utils/itemData';
-import { trackSearch, trackItemCrafted } from '../utils/analytics';
+import { trackItemCrafted } from '../utils/analytics';
 
 interface ItemSearchProps {
   onSelect: (item: Item) => void;
@@ -26,9 +26,6 @@ export function ItemSearch({ onSelect, placeholder = 'Search items...', filter }
       setResults(items);
       setShowResults(true);
       setSelectedIndex(0);
-      
-      // Track search event
-      trackSearch(query, items.length);
     } else {
       setResults([]);
       setShowResults(false);
