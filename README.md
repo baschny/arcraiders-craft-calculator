@@ -1,84 +1,84 @@
-# Arc Raiders - Craft Calculator
+# ARC Raiders - Crafting Stash Optimizer
 
-A calculator app for the Arc Raiders game that helps you optimize stash space when crafting items.
+A specialized calculator for the game [**ARC Raiders**](https://arcraiders.com/) to help players optimize users stash space when crafting. It calculates whether crafting a specific item will result in a net gain or loss of stash slots, taking into account stack sizes, current inventory, and recipe requirements.
 
-## Features
+![App Screenshot Placeholder](screenshot.png)
 
-- Calculate if crafting items will increase or decrease stash space usage
-- Support for multiple required items per recipe
-- Automatic calculation of optimal craft amount to minimize stash space
-- Support for incomplete stacks (items already in your stash)
-- Real-time results as you enter data
+## 🚀 Features
 
-## How to Use
+- **Stash Space Impact Analysis**: Instantly see if crafting an item will free up or consume more stash space.
+- **Optimal Craft Amount**: Automatically calculates the exact number of items to craft to maximize stash space efficiency.
+- **Visual Stash Graph**: View a breakdown of stash usage for every possible craft amount.
+- **Multi-Material Support**: Handles complex recipes with multiple required items and varying stack sizes.
+- **Incomplete Stack Integration**: Account for items you already have in your stash, including partially filled stacks.
+- **Real-time Calculations**: Visual feedback and results update immediately as you adjust quantities.
+- **Game-Accurate Data**: Uses stack sizes and item data from [arctracker.io](https://arctracker.io).
 
-1. **Crafted Item**: Set the stack size and optionally the incomplete stack size if you already have some of this item
-2. **Required Items**: For each material needed:
-   - Set the stack size
-   - Enter amount required per craft
-   - Enter amount you currently possess
-   - Optionally enter incomplete stack size
-3. **Add more items**: Click "Add Required Item" to add more materials to the recipe
-4. **View Results**: The calculator shows:
-   - Maximum craftable amount
-   - Current stash usage
-   - Stash usage after crafting all items
-   - **Optimal recommendation**: Exact number to craft for minimal stash space
+## 📖 How to Use
 
-## Stack Sizes
+1.  **Define the Target Item**:
+    - Select or enter the item you want to craft.
+    - Enter the number of these items you **already possess** (Incomplete Stack).
+2.  **Required Materials**:
+    - Specify your **Current Amount** for that material.
+3.  **Analyze the Results**:
+    - **Maximum Craftable**: Shows how many items you can make with your current materials.
+    - **Stash Delta**: Displays the change in stash slots (e.g., "+2 slots freed").
+    - **The Recommendation**: Follow the "Optimal Recommendation" to reach the most space-efficient stash state.
 
-Available stack sizes match the game: 3, 5, 10, 15, 50, 100
+## 🛠️ Development
 
-## Development
+### Prerequisites
 
-### Setup
+- Node.js (v18 or higher recommended)
+- npm
 
-\`\`\`bash
+### Installation
+
+```bash
+git clone https://github.com/baschny/arcraiders-craft-calc.git
+cd arcraiders-craft-calc
 npm install
-\`\`\`
+```
 
 ### Updating Game Data
 
-The calculator uses item data from the `arcraiders-data` repository. To update the item data:
+The application relies on item data that can be synced from the [RaidTheory/arcraiders-data](https://github.com/RaidTheory/arcraiders-data) repository.
 
-\`\`\`bash
-./update-data.sh
-\`\`\`
+1.  Ensure you have the `arcraiders-data` repository cloned in the same parent directory as this project.
+2.  Run the update script:
+    ```bash
+    ./update-data.sh
+    ```
+    This will sync JSON definitions and regenerate the items list in `public/data/`.
 
-This script copies the latest item JSON files from `../arcraiders-data/items/` to `public/data/items/`.
+### Available Scripts
 
-**Requirements:**
-- The `arcraiders-data` repository must be cloned in the parent directory
-- Run this script whenever the game data is updated
+- `npm run dev`: Starts the Vite development server.
+- `npm run build`: Compiles TypeScript and builds the production-ready app.
+- `npm run lint`: Runs ESLint to check for code quality issues.
+- `npm run preview`: Locally previews the production build.
 
-### Run Dev Server
+## 💻 Tech Stack
 
-\`\`\`bash
-npm run dev
-\`\`\`
+- **Framework**: [React 19](https://reactjs.org/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Bundler**: [Vite](https://vitejs.dev/)
+- **Styling**: [SCSS (Sass)](https://sass-lang.com/) with a modular structure.
+- **State Management**: React Hooks.
 
-### Build for Production
+## 🤝 Contributing
 
-\`\`\`bash
-npm run build
-\`\`\`
+Contributions are welcome! If you have suggestions for new features or find any bugs, please open an issue or submit a pull request.
 
-### Preview Production Build
+## 📄 License
 
-\`\`\`bash
-npm run preview
-\`\`\`
+Distributed under the MIT License. See `LICENSE` for more information.
 
-## Tech Stack
+## 🙏 Acknowledgments
 
-- React 18
-- TypeScript
-- Vite
-- SCSS
+- Item data and item assets provided by [RaidTheory/arcraiders-data](https://github.com/RaidTheory/arcraiders-data) and [arctracker.io](https://arctracker.io) . Thank you for making this data available!
+- Inspiration from the ARC Raiders community
 
-## Future Enhancements
-
-- Pre-loaded game data with item types and recipes
-- Item selection dropdowns instead of manual input
-- Save/load recipes
-- Multiple recipe comparison
+---
+*Note: This is a fan-made tool and is not officially affiliated with Embark Studios or ARC Raiders.*
