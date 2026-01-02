@@ -78,8 +78,8 @@ export function StashSpaceGraph({
                 </div>
                 <div className="graph-x-label">
                   {(index === 0 ||
-                    index === dataPoints.length - 1 ||
-                    index === minCraftForReduction) &&
+                    isOptimal ||
+                    point.slots !== dataPoints[index - 1]?.slots) &&
                     point.amount}
                 </div>
               </div>
