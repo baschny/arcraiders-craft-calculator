@@ -61,6 +61,12 @@ $font-xl: 18px;
 $font-2xl: 20px;
 $font-3xl: 24px;
 
+// Layout
+$calculator-min-width: 450px;
+$sidebar-min-width: 500px;
+$container-max-width: 1600px;
+$layout-breakpoint: $calculator-min-width + $sidebar-min-width + $spacing-xl + ($spacing-xl * 2);
+
 // Shadows
 $shadow-default: 0 4px 12px rgba(0, 0, 0, 0.3);
 $shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.4);

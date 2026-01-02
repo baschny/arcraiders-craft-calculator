@@ -175,11 +175,11 @@ input, select {
   display: flex;
   gap: $spacing-xl;
   padding: $spacing-xl;
-  max-width: 1600px;
+  max-width: $container-max-width;
   margin: 0 auto;
   width: 100%;
 
-  @media (max-width: 1200px) {
+  @media (max-width: $layout-breakpoint) {
     flex-direction: column;
   }
 }

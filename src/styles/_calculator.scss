@@ -1,10 +1,14 @@
 @use 'variables' as *;
 
 .calculator {
-  flex: 0 0 auto;
-  width: 500px;
-  max-width: 500px;
-  min-width: 450px;
+  flex: 0 1 auto;
+  min-width: $calculator-min-width;
+
+  @media (max-width: $layout-breakpoint) {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
 
   .selected-item-display {
     display: flex;
@@ -173,6 +177,7 @@
 
 .results-sidebar {
   flex: 1;
+  min-width: $sidebar-min-width;
   position: sticky;
   top: 0;
   align-self: flex-start;
@@ -182,6 +187,13 @@
   flex-direction: column;
   gap: $spacing-md;
 
+  @media (max-width: $layout-breakpoint) {
+    min-width: 0;
+    position: static;
+    width: 100%;
+    margin-top: $spacing-lg;
+    overflow-y: initial;
+  }
 }
 
 .results {
@@ -299,16 +311,3 @@
   }
 }
 
-// Responsive styles
-@media (max-width: 1200px) {
-  .calculator {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .results-sidebar {
-    position: static;
-    width: 100%;
-    margin-top: $spacing-lg;
-  }
-}
