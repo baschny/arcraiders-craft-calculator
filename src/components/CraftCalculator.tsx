@@ -6,8 +6,6 @@ import { CraftingResults } from './CraftingResults';
 import { ItemSearch } from './ItemSearch';
 import { loadItems, getItem } from '../utils/itemData';
 
-const STACK_SIZES: StackSize[] = [3, 5, 10, 15, 50, 100];
-
 interface RequiredItemWithName extends RequiredItem {
   name?: string;
   imageUrl?: string;
@@ -20,21 +18,12 @@ export function CraftCalculator() {
   const [craftedInStash, setCraftedInStash] = useState(0);
   const craftedIncomplete = craftedInStash % craftedStackSize;
   const [requiredItems, setRequiredItems] = useState<RequiredItemWithName[]>([]);
-  const [manualMode, setManualMode] = useState(false);
 
   useEffect(() => {
     loadItems()
       .then(() => setLoading(false))
       .catch((err) => {
         console.error('Failed to load items:', err);
-        setManualMode(true);
-        setRequiredItems([{
-          id: crypto.randomUUID(),
-          stackSize: 10,
-          amountRequired: 1,
-          amountPossessed: 0,
-          incompleteStackSize: 0,
-        }]);
         setLoading(false);
       });
   }, []);
@@ -61,30 +50,7 @@ export function CraftCalculator() {
     }
   };
 
-  const addRequiredItem = () => {
-    setRequiredItems([
-      ...requiredItems,
-      {
-        id: crypto.randomUUID(),
-        stackSize: 10,
-        amountRequired: 1,
-        amountPossessed: 0,
-        incompleteStackSize: 0,
-      },
-    ]);
-  };
 
-  const removeRequiredItem = (id: string) => {
-    if (requiredItems.length > 1) {
-      setRequiredItems(requiredItems.filter((item) => item.id !== id));
-    }
-  };
-
-  const updateRequiredItem = (id: string, updates: Partial<RequiredItem>) => {
-    setRequiredItems(
-      requiredItems.map((item) => (item.id === id ? { ...item, ...updates } : item))
-    );
-  };
 
   const recipe: CraftingRecipe = {
     craftedItem: {
@@ -110,38 +76,17 @@ export function CraftCalculator() {
   return (
     <>
       <div className="calculator">
-      {!manualMode && (
-        <div className="card">
-          <h2 className="card-title">Select Item to Craft</h2>
-          <div className="form-group">
-            <label>Search for craftable item</label>
-            <ItemSearch
-              onSelect={handleItemSelect}
-              placeholder="Type item name..."
-              filter={(item) => !!item.recipe && Object.keys(item.recipe).length > 0}
-            />
-          </div>
-          {!selectedItem && (
-            <p style={{ color: '#888', fontSize: '14px', marginTop: '12px' }}>
-              Or{' '}
-              <button
-                onClick={() => setManualMode(true)}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: '#4fc3f7',
-                  textDecoration: 'underline',
-                  cursor: 'pointer',
-                  padding: 0,
-                  font: 'inherit',
-                }}
-              >
-                enter recipe manually
-              </button>
-            </p>
-          )}
+      <div className="card">
+        <h2 className="card-title">Select Item to Craft</h2>
+        <div className="form-group">
+          <label>Search for craftable item</label>
+          <ItemSearch
+            onSelect={handleItemSelect}
+            placeholder="Type item name..."
+            filter={(item) => !!item.recipe && Object.keys(item.recipe).length > 0}
+          />
         </div>
-      )}
+      </div>
 
       {selectedItem && (
         <div className="card">
@@ -194,45 +139,12 @@ export function CraftCalculator() {
         </div>
       )}
 
-      {manualMode && !selectedItem && (
-        <div className="card">
-          <h2 className="card-title">Crafted Item (Manual Mode)</h2>
-          <div className="form-row">
-            <div className="form-group">
-              <label>Stack Size</label>
-              <select
-                value={craftedStackSize}
-                onChange={(e) => setCraftedStackSize(Number(e.target.value) as StackSize)}
-              >
-                {STACK_SIZES.map((size) => (
-                  <option key={size} value={size}>
-                    {size}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="form-group">
-              <label>
-                Already in Stash{' '}
-                <span style={{ color: '#888', fontSize: '12px' }}>(optional)</span>
-              </label>
-              <input
-                type="number"
-                min="0"
-                value={craftedInStash}
-                onChange={(e) => setCraftedInStash(Math.max(0, Number(e.target.value)))}
-                placeholder="0"
-              />
-            </div>
-          </div>
-        </div>
-      )}
 
-      {(selectedItem || (manualMode && requiredItems.length > 0)) && (
+      {selectedItem && (
         <div className="card">
           <h2 className="card-title">Required Items</h2>
           {requiredItems.map((item, index) => (
-            <div key={item.id} className={`required-item ${manualMode ? 'manual-mode' : ''}`}>
+            <div key={item.id} className="required-item">
               <div className="item-header">
                 {item.imageUrl && (
                   <img
@@ -249,44 +161,10 @@ export function CraftCalculator() {
                   />
                 )}
                 <h4>
-                  {selectedItem && <span style={{ color: '#4fc3f7', marginRight: '6px' }}>{item.amountRequired}x</span>}
+                  <span style={{ color: '#4fc3f7', marginRight: '6px' }}>{item.amountRequired}x</span>
                   {item.name || `Item ${index + 1}`}
                 </h4>
               </div>
-              {!selectedItem && (
-                <>
-                  <div className="input-with-label">
-                    <label>Required</label>
-                    <input
-                      type="number"
-                      min="1"
-                      value={item.amountRequired}
-                      onChange={(e) =>
-                        updateRequiredItem(item.id, {
-                          amountRequired: Math.max(1, Number(e.target.value)),
-                        })
-                      }
-                    />
-                  </div>
-                  <div className="input-with-label">
-                    <label>Stack</label>
-                    <select
-                      value={item.stackSize}
-                      onChange={(e) =>
-                        updateRequiredItem(item.id, {
-                          stackSize: Number(e.target.value) as StackSize,
-                        })
-                      }
-                    >
-                      {STACK_SIZES.map((size) => (
-                        <option key={size} value={size}>
-                          {size}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </>
-              )}
               <div className="input-with-label">
                 <label>In Stash</label>
                 <input
@@ -295,30 +173,21 @@ export function CraftCalculator() {
                   value={item.amountPossessed}
                   onChange={(e) => {
                     const possessed = Math.max(0, Number(e.target.value));
-                    updateRequiredItem(item.id, {
-                      amountPossessed: possessed,
-                      incompleteStackSize: possessed % item.stackSize,
-                    });
+                    const updatedItems = requiredItems.map((reqItem) =>
+                      reqItem.id === item.id
+                        ? {
+                            ...reqItem,
+                            amountPossessed: possessed,
+                            incompleteStackSize: possessed % item.stackSize,
+                          }
+                        : reqItem
+                    );
+                    setRequiredItems(updatedItems);
                   }}
                 />
               </div>
-              {manualMode && requiredItems.length > 1 && (
-                <button
-                  className="remove-btn"
-                  onClick={() => removeRequiredItem(item.id)}
-                  type="button"
-                  style={{ padding: '4px 8px', fontSize: '11px' }}
-                >
-                  ×
-                </button>
-              )}
             </div>
           ))}
-          {manualMode && (
-            <button className="add-item-btn" onClick={addRequiredItem} type="button">
-              + Add Required Item
-            </button>
-          )}
         </div>
       )}
       </div>

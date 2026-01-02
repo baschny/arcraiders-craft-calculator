@@ -93,12 +93,6 @@
     }
   }
 
-  .form-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: $spacing-md;
-  }
-
   .required-item {
     background: $bg-tertiary;
     padding: $spacing-md;
@@ -131,34 +125,6 @@
       img {
         flex-shrink: 0;
       }
-    }
-
-    .remove-btn {
-      background: $text-error;
-      color: white;
-      padding: $spacing-xs $spacing-md;
-      border-radius: $radius-sm;
-      font-size: $font-sm;
-
-      &:hover {
-        background: #c62828;
-      }
-    }
-  }
-
-  .add-item-btn {
-    background: $bg-tertiary;
-    color: $text-accent;
-    padding: $spacing-md $spacing-lg;
-    border-radius: $radius-md;
-    font-size: $font-base;
-    font-weight: 500;
-    border: 2px solid $border-light;
-    width: 100%;
-
-    &:hover {
-      background: #454545;
-      border-color: $text-accent;
     }
   }
 }
