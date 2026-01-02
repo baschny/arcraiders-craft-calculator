@@ -19,34 +19,16 @@ export function StashSpaceGraph({
   const minSlots = Math.min(...dataPoints.map((p) => p.slots));
   const slotRange = maxSlots - minSlots || 1;
 
-  const getBarColor = (index: number, slots: number) => {
-    // For optimal, use category color (green/blue) not distinct optimal color
-    if (index === optimalAmount) {
-      if (slots < currentSlots) {
-        return '#4caf50'; // Green for optimal that saves space
-      } else if (slots > currentSlots) {
-        return 'rgba(229, 57, 53, 0.6)'; // Red for optimal that uses more
-      } else {
-        return 'rgba(79, 195, 247, 0.5)'; // Blue for optimal with same space
-      }
-    }
-    // Min for reduction uses same color logic as optimal but without star
-    if (minCraftForReduction && index === minCraftForReduction) {
-      if (slots < currentSlots) {
-        return '#4caf50'; // Green - same as optimal
-      } else if (slots > currentSlots) {
-        return 'rgba(229, 57, 53, 0.6)'; // Red - same as optimal
-      } else {
-        return 'rgba(79, 195, 247, 0.5)'; // Blue - same as optimal
-      }
-    }
+  const getBarClass = (index: number, slots: number) => {
+    const isOptimalOrMin = index === optimalAmount || (minCraftForReduction && index === minCraftForReduction);
+    
     if (slots < currentSlots) {
-      return 'rgba(76, 175, 80, 0.4)'; // Faded green for savings
+      return isOptimalOrMin ? 'bar-saves-optimal' : 'bar-saves';
     }
     if (slots > currentSlots) {
-      return 'rgba(229, 57, 53, 0.4)'; // Faded red for more space
+      return isOptimalOrMin ? 'bar-uses-more-optimal' : 'bar-uses-more';
     }
-    return 'rgba(79, 195, 247, 0.3)'; // Neutral
+    return isOptimalOrMin ? 'bar-same-optimal' : 'bar-same';
   };
 
   const maxHeight = 100;
@@ -61,16 +43,15 @@ export function StashSpaceGraph({
             const barHeight = ((point.slots - minSlots) / slotRange) * maxHeight + minBarHeight;
             const isOptimal = index === optimalAmount;
 
-            const barColor = getBarColor(index, point.slots);
+            const barClass = getBarClass(index, point.slots);
             const showOptimalBorder = isOptimal && point.slots < currentSlots;
 
             return (
               <div key={index} className="graph-bar-wrapper">
                 <div
-                  className={`graph-bar ${showOptimalBorder ? 'optimal' : ''}`}
+                  className={`graph-bar ${barClass} ${showOptimalBorder ? 'optimal' : ''}`}
                   style={{
                     height: `${barHeight}px`,
-                    backgroundColor: barColor,
                   }}
                   title={`Craft ${point.amount}: ${point.slots} slots (${point.slots - currentSlots >= 0 ? '+' : ''}${point.slots - currentSlots})`}
                 >
@@ -95,19 +76,19 @@ export function StashSpaceGraph({
       </div>
       <div className="graph-legend">
         <div className="legend-item">
-          <div className="legend-color" style={{ background: '#4caf50' }} />
-          <span>★ Optimal</span>
+          <div className="legend-color bar-saves-optimal" />
+          <span>Optimal</span>
         </div>
         <div className="legend-item">
-          <div className="legend-color" style={{ background: 'rgba(76, 175, 80, 0.4)' }} />
+          <div className="legend-color bar-saves" />
           <span>Saves Space</span>
         </div>
         <div className="legend-item">
-          <div className="legend-color" style={{ background: 'rgba(229, 57, 53, 0.4)' }} />
+          <div className="legend-color bar-uses-more" />
           <span>Uses More</span>
         </div>
         <div className="legend-item">
-          <div className="legend-color" style={{ background: 'rgba(79, 195, 247, 0.3)' }} />
+          <div className="legend-color bar-same" />
           <span>Same Space</span>
         </div>
       </div>
